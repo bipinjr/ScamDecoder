@@ -14,6 +14,7 @@ const CASES = [
   ["http://sbi-kyc-update.example/verify", true],
   ["http://paypa1-secure-login.example/account", true],
   ["http://hdfc-netbanking.example/login", true],
+  ["http://1.1.1.1/login", true], // real, harmless (Cloudflare DNS) address: proves blocking on a page that does load
   ["https://www.sbi.co.in/", false],
 ];
 
