@@ -57,6 +57,7 @@ public class MainActivity extends Activity {
         });
         setContentView(web);
         askPermissions();
+        rememberBrowser();
         open(getIntent());
     }
 
@@ -67,9 +68,23 @@ public class MainActivity extends Activity {
     }
 
     private void open(Intent i) {
-        String text = i != null && Intent.ACTION_SEND.equals(i.getAction()) ? i.getStringExtra(Intent.EXTRA_TEXT) : null;
+        String text = null;
+        if (i != null && Intent.ACTION_SEND.equals(i.getAction())) text = i.getStringExtra(Intent.EXTRA_TEXT);
+        else if (i != null && Intent.ACTION_PROCESS_TEXT.equals(i.getAction())) {
+            CharSequence picked = i.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT);
+            text = picked == null ? null : picked.toString();
+        }
         shared = text != null && !text.trim().isEmpty() ? (text.length() > 4000 ? text.substring(0, 4000) : text) : null;
         web.loadUrl(base + "/share");
+    }
+
+    /** While DECODR is not yet the default browser, note which app is, so the link guard can hand safe links back to it. */
+    private void rememberBrowser() {
+        android.content.pm.ResolveInfo r = getPackageManager().resolveActivity(
+            new Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com")).addCategory(Intent.CATEGORY_BROWSABLE), PackageManager.MATCH_DEFAULT_ONLY);
+        String p = r == null || r.activityInfo == null ? null : r.activityInfo.packageName;
+        if (p != null && !p.equals(getPackageName()) && !p.equals("android"))
+            getSharedPreferences("decodr", MODE_PRIVATE).edit().putString("browser", p).apply();
     }
 
     private void askPermissions() {

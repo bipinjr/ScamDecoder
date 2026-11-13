@@ -1,3 +1,4 @@
+import app.scamdecoder.LinkGuard;
 import app.scamdecoder.Rules;
 
 /** Laptop self-check for the on-phone rules. Run by android/build.sh before every build. */
@@ -21,6 +22,18 @@ public class RulesCheck {
         String masked = Rules.mask("Call 9876543210, OTP 483920, a/c 1234 5678 9012 at sbi-kyc.xyz");
         ok(!masked.matches(".*\\d{4,}.*"), "digits leaked: " + masked);
         ok(masked.contains("sbi-kyc.xyz"), "scam link must survive masking: " + masked);
+        // Link guard: same verdicts as the browser extension's guard.js.
+        String[][] links = {
+            {"http://sbi-kyc-update.example/verify", "block"}, {"http://paypa1-secure-login.example/account", "block"},
+            {"http://hdfc-netbanking.example/login", "block"}, {"http://1.1.1.1/login", "block"},
+            {"http://sbi-kyc-update.127.0.0.1.nip.io:3000/", "block"}, {"https://user@sbi.co.in.evil.example/", "block"},
+            {"https://www.sbi.co.in/", "allow"}, {"https://www.google.com/search?q=kyc", "allow"},
+            {"https://bit.ly/abc", "allow"}, {"http://192.168.1.1/login", "allow"}, {"mailto:a@b.c", "allow"}, {"not a url", "allow"},
+        };
+        for (String[] c : links) {
+            boolean blocked = LinkGuard.shouldBlock(LinkGuard.reasons(c[0]));
+            ok(blocked == c[1].equals("block"), "link guard wrong for " + c[0] + ": blocked=" + blocked);
+        }
         System.out.println("rules checks passed");
     }
 }

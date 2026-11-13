@@ -12,7 +12,7 @@ cd "$(dirname "$0")"
 rm -rf out && mkdir -p out/res/values out/res/mipmap out/classes out/test out/dex
 
 # 1. On-phone rules must pass their self-check before anything is packaged.
-javac -encoding UTF-8 -d out/test src/app/scamdecoder/Rules.java test/RulesCheck.java
+javac -encoding UTF-8 -d out/test src/app/scamdecoder/Rules.java src/app/scamdecoder/LinkGuard.java test/RulesCheck.java
 java -cp out/test RulesCheck
 
 # 2. Resources: the server address and the icon.
