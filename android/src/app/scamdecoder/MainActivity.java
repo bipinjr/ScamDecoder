@@ -112,7 +112,8 @@ public class MainActivity extends Activity {
             }
             final String t = text, err = error;
             runOnUiThread(() -> {
-                if (t == null) { Toast.makeText(this, err, Toast.LENGTH_LONG).show(); return; }
+                // Could not read it: say why, and open the check page so the screenshot can be picked there instead.
+                if (t == null) { Toast.makeText(this, err + " Pick the screenshot here instead.", Toast.LENGTH_LONG).show(); web.loadUrl(base + "/check"); return; }
                 toCheck = t;
                 web.loadUrl(base + "/check");
             });
