@@ -25,11 +25,11 @@ export function Footer() {
         </div>
         <div>
           <p className="font-semibold text-white">Lost money to a scam?</p>
-          <p className="mt-3 text-ink-soft">
-            Call <a className="font-semibold text-white underline decoration-red underline-offset-4" href="tel:1930">1930</a> right away,
-            or report at{" "}
-            <a className="font-semibold text-white underline decoration-red underline-offset-4" href="https://cybercrime.gov.in" target="_blank" rel="noreferrer">cybercrime.gov.in</a>.
-          </p>
+          <p className="mt-3 text-ink-soft">Call the helpline right away, or report it online.</p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <a className="btn-primary inline-flex items-center rounded-xl px-5 py-3 font-semibold" href="tel:1930">Call 1930</a>
+            <a className="btn-ghost inline-flex items-center rounded-xl px-5 py-3 font-semibold" href="https://cybercrime.gov.in" target="_blank" rel="noreferrer">cybercrime.gov.in</a>
+          </div>
           <p className="mt-6 text-sm text-ink-soft/70">Built for Colossus 3.0 by Team Zenith: Bipin A, Darshan HS, Manoj Bharadwaj and Kaushal Ved</p>
         </div>
       </div>

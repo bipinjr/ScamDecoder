@@ -5,9 +5,9 @@ import { LANGUAGES, LANGUAGE_NATIVE, OCR_LANG, type Analysis } from "@/lib/share
 import { SAMPLES } from "@/lib/samples";
 import { findMatches } from "@/lib/signals";
 import { Result } from "./Result";
-import { QrScanner, QrResult, findQr } from "./HurdleTools";
+import { QrResult, findQr } from "./HurdleTools";
 
-type Mode = "text" | "voice" | "image" | "qr";
+type Mode = "text" | "voice" | "image";
 type Stage = "idle" | "reading" | "rules" | "ai" | "done";
 
 const MAX_AUDIO = 4 * 1024 * 1024; // Vercel function body limit is 4.5 MB
@@ -229,8 +229,8 @@ QR code in this image contains: ${found}` : extracted;
 
               {/* Compose */}
               <div className="border-t hairline bg-sheet p-3">
-                <div role="tablist" aria-label="How did you get it?" className="mb-3 grid grid-cols-2 gap-1 rounded-xl sm:grid-cols-4 bg-white/[0.05] p-1 text-[0.92rem]">
-                  {([["text", "Message"], ["voice", "Voice"], ["image", "Screenshot"], ["qr", "QR code"]] as const).map(([m, label]) => (
+                <div role="tablist" aria-label="How did you get it?" className="mb-3 grid grid-cols-3 gap-1 rounded-xl bg-white/[0.05] p-1 text-[0.92rem]">
+                  {([["text", "Message"], ["voice", "Voice"], ["image", "Screenshot"]] as const).map(([m, label]) => (
                     <button
                       key={m} role="tab" aria-selected={mode === m}
                       onClick={() => { setMode(m); setError(""); }}
@@ -275,16 +275,10 @@ QR code in this image contains: ${found}` : extracted;
                   </div>
                 )}
 
-                {mode === "qr" && (
-                  <p className="rounded-2xl border border-dashed border-white/25 px-4 py-4 text-center text-sm text-ink-soft">
-                    Scan with your camera or pick a QR image just below. UPI payment requests show who gets paid and how much.
-                  </p>
-                )}
-
                 {mode === "image" && (
                   <label className={`block cursor-pointer rounded-2xl border-2 border-dashed border-white/25 px-4 py-4 text-center font-bold text-white hover:border-white/50 ${busy ? "pointer-events-none opacity-60" : ""}`}>
                     Choose a screenshot
-                    <span className="block text-sm font-normal text-ink-soft">Text and QR codes are read</span>
+                    <span className="block text-sm font-normal text-ink-soft">Text and any QR code in it are read</span>
                     <input type="file" accept="image/*" className="sr-only" onChange={(e) => e.target.files?.[0] && readImage(e.target.files[0])} />
                   </label>
                 )}
@@ -320,7 +314,6 @@ QR code in this image contains: ${found}` : extracted;
           </ol>
         )}
 
-        {mode === "qr" && <div id="qr" className="card mb-10 max-w-3xl p-5 sm:p-7"><QrScanner /></div>}
         {mode === "image" && qr && (
           <section className="card mb-10 max-w-3xl p-5 sm:p-7" aria-label="QR code in the screenshot">
             <h2 className="text-xl text-white">This screenshot has a QR code</h2>

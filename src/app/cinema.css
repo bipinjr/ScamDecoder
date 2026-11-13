@@ -120,4 +120,4 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 @keyframes cine-menu { from { opacity: 0; transform: translateY(-6px); } }
 @media (prefers-reduced-motion: reduce) { .menu-in > li { animation: none; } }
 /* Inline text links (1930, cybercrime.gov.in, sources): invisible padding grows the tap area to ~44px without moving the text. */
-:where(p, li, span, small, figcaption, cite) > a:not([class*="btn"]):not(.block):not(.inline-block):not(.flex) { padding: 11px 4px; margin-inline: -4px; }
+:where(p, small, figcaption, cite) > a:not([class*="btn"]):not(.block):not(.inline-block):not(.flex) { padding: 11px 4px; margin-inline: -4px; }
