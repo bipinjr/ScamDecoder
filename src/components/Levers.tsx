@@ -27,7 +27,7 @@ export function Levers() {
           <a className="mt-1 font-semibold text-white underline underline-offset-4" href={CITATIONS.stajano.url} target="_blank" rel="noreferrer">
             {CITATIONS.stajano.label}: {CITATIONS.stajano.title}
           </a>
-          <a className="mt-3 underline underline-offset-4 hover:text-white" href={CITATIONS.stajano.pdf} target="_blank" rel="noreferrer">Read the paper (PDF)</a>
+          <a className="mt-1 inline-block py-2 underline underline-offset-4 transition-colors hover:text-white" href={CITATIONS.stajano.pdf} target="_blank" rel="noreferrer">Read the paper (PDF)</a>
         </li>
       </ul>
     </section>

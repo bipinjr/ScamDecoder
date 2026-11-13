@@ -29,7 +29,7 @@ export function Nav() {
           Check a message
         </Link>
         <button
-          className="ml-auto rounded-lg p-2 text-ink lg:hidden sm:ml-0"
+          className="ml-auto rounded-lg p-2.5 text-ink transition-colors hover:bg-white/[0.06] lg:hidden sm:ml-0"
           aria-expanded={open} aria-controls="mobile-nav" aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen(!open)}
         >
@@ -39,10 +39,10 @@ export function Nav() {
         </button>
       </nav>
       {open && (
-        <ul id="mobile-nav" className="border-t hairline px-4 pb-4 pt-2 lg:hidden">
+        <ul id="mobile-nav" className="menu-in border-t hairline px-4 pb-4 pt-2 lg:hidden">
           {[{ href: "/check", label: "Check a message" }, ...LINKS].map((l) => (
             <li key={l.href}>
-              <Link href={l.href} onClick={() => setOpen(false)} className={`block rounded-lg px-3 py-3 text-lg ${path === l.href ? "bg-white/[0.08] text-white" : "text-ink-soft"}`}>
+              <Link href={l.href} onClick={() => setOpen(false)} className={`block rounded-lg px-3 py-3 text-lg transition-colors active:bg-white/[0.08] ${path === l.href ? "bg-white/[0.08] text-white" : "text-ink-soft"}`}>
                 {l.label}
               </Link>
             </li>

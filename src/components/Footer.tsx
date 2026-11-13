@@ -18,9 +18,9 @@ export function Footer() {
         <div>
           <p className="font-semibold text-white">Use it</p>
           <ul className="mt-3 space-y-2 text-ink-soft">
-            <li><Link className="hover:text-white" href="/check">Check a message</Link></li>
-            <li><Link className="hover:text-white" href="/radar">Scam Radar</Link></li>
-            <li><Link className="hover:text-white" href="/extension">Browser extension</Link></li>
+            <li><Link className="inline-block py-2 transition-colors hover:text-white" href="/check">Check a message</Link></li>
+            <li><Link className="inline-block py-2 transition-colors hover:text-white" href="/radar">Scam Radar</Link></li>
+            <li><Link className="inline-block py-2 transition-colors hover:text-white" href="/extension">Browser extension</Link></li>
           </ul>
         </div>
         <div>

@@ -56,7 +56,7 @@ export function Ticker() {
             </ul>
           )}
         </div>
-        <button onClick={() => setPaused(!paused)} className="shrink-0 rounded-md px-2 py-1 text-xs text-ink-soft hover:text-white" aria-pressed={paused}>
+        <button onClick={() => setPaused(!paused)} className="min-h-11 min-w-11 shrink-0 rounded-md px-3 text-xs text-ink-soft transition-colors hover:text-white" aria-pressed={paused}>
           {paused ? "Play" : "Pause"}
         </button>
         {updated && (
