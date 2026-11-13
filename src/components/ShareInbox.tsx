@@ -19,6 +19,12 @@ export function ShareInbox() {
   const [clipErr, setClipErr] = useState("");
 
   useEffect(() => {
+    if (inbox?.kind !== "text") return;
+    try { sessionStorage.setItem("scamdecoder-prefill", inbox.text.slice(0, 4000)); } catch {}
+    location.replace("/check");
+  }, [inbox]);
+
+  useEffect(() => {
     (async () => {
       const q = new URLSearchParams(location.search);
       const direct = [q.get("title"), q.get("text"), q.get("url")].filter(Boolean).join(" ");

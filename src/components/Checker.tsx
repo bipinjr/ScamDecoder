@@ -27,7 +27,7 @@ function Live({ text }: { text: string }) {
 export function Checker({ children }: { children?: React.ReactNode }) {
   const [mode, setMode] = useState<Mode>("text");
   const [text, setText] = useState("");
-  useEffect(() => { try { const t = sessionStorage.getItem("scamdecoder-prefill"); if (t) { sessionStorage.removeItem("scamdecoder-prefill"); setText(t); } } catch {} }, []); // shared from the phone app
+  useEffect(() => { try { const t = sessionStorage.getItem("scamdecoder-prefill"); if (t) { sessionStorage.removeItem("scamdecoder-prefill"); setText(t); analyze(t, "text"); } } catch {} }, []); // eslint-disable-line react-hooks/exhaustive-deps -- run once: a shared message is checked straight away // shared from the phone app
   const [language, setLanguage] = useState("English");
   const [stage, setStage] = useState<Stage>("idle");
   const [error, setError] = useState("");
