@@ -5,8 +5,9 @@ import { LANGUAGES, LANGUAGE_NATIVE, OCR_LANG, type Analysis } from "@/lib/share
 import { SAMPLES } from "@/lib/samples";
 import { findMatches } from "@/lib/signals";
 import { Result } from "./Result";
+import { QrScanner, QrResult, findQr } from "./HurdleTools";
 
-type Mode = "text" | "voice" | "image";
+type Mode = "text" | "voice" | "image" | "qr";
 type Stage = "idle" | "reading" | "rules" | "ai" | "done";
 
 const MAX_AUDIO = 4 * 1024 * 1024; // Vercel function body limit is 4.5 MB
@@ -31,8 +32,9 @@ export function Checker({ children }: { children?: React.ReactNode }) {
   const [language, setLanguage] = useState("English");
   const [stage, setStage] = useState<Stage>("idle");
   const [error, setError] = useState("");
+  const [qr, setQr] = useState(""); // QR found inside a screenshot
   const [result, setResult] = useState<Analysis | null>(null);
-  const [checked, setChecked] = useState({ text: "", language: "English", source: "text" as Mode });
+  const [checked, setChecked] = useState({ text: "", language: "English", source: "text" as "text" | "voice" | "image" });
   const [recording, setRecording] = useState(false);
   const recorder = useRef<MediaRecorder | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -41,7 +43,7 @@ export function Checker({ children }: { children?: React.ReactNode }) {
   const preview = text.trim() ? text : SAMPLES[0].text;
   const liveCount = useMemo(() => (text.trim() ? findMatches(text).length : 0), [text]);
 
-  async function analyze(input: string, source: Mode) {
+  async function analyze(input: string, source: "text" | "voice" | "image") {
     if (input.trim().length < 5) return setError("Paste the message you received to check it.");
     setError("");
     setResult(null);
@@ -107,16 +109,26 @@ export function Checker({ children }: { children?: React.ReactNode }) {
 
   async function readImage(file: File) {
     setError("");
+    setQr("");
     setStage("reading");
+    const found = await findQr(file).catch(() => null);
+    if (found) setQr(found);
     try {
       // Loaded on demand from a CDN so the main page stays light; runs fully in the browser.
       const url = "https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.esm.min.js";
       const Tesseract = (await import(/* webpackIgnore: true */ url)).default;
       const { data } = await Tesseract.recognize(file, ["eng", "hin", OCR_LANG[language]].filter(Boolean).join("+"));
       const extracted = String(data.text || "").replace(/\n{3,}/g, "\n\n").trim();
-      if (extracted.length < 5) throw new Error("No readable text found in that image. Try a sharper screenshot.");
-      setText(extracted);
-      await analyze(extracted, "image");
+      if (extracted.length < 5) {
+        if (found) { setStage("done"); return; } // a bare QR code: its verdict is shown below
+        throw new Error("No readable text found in that image. Try a sharper screenshot.");
+      }
+      // The QR is part of the evidence: without it a refund poster can read as harmless text.
+      const input = found ? `${extracted}
+
+QR code in this image contains: ${found}` : extracted;
+      setText(input);
+      await analyze(input, "image");
     } catch (e) {
       setStage("idle");
       setError((e as Error).message || "Couldn't read that image.");
@@ -217,8 +229,8 @@ export function Checker({ children }: { children?: React.ReactNode }) {
 
               {/* Compose */}
               <div className="border-t hairline bg-sheet p-3">
-                <div role="tablist" aria-label="How did you get it?" className="mb-3 grid grid-cols-3 gap-1 rounded-xl bg-white/[0.05] p-1 text-[0.92rem]">
-                  {([["text", "Message"], ["voice", "Call / voice"], ["image", "Screenshot"]] as const).map(([m, label]) => (
+                <div role="tablist" aria-label="How did you get it?" className="mb-3 grid grid-cols-4 gap-1 rounded-xl bg-white/[0.05] p-1 text-[0.92rem]">
+                  {([["text", "Message"], ["voice", "Call / voice"], ["image", "Screenshot"], ["qr", "QR code"]] as const).map(([m, label]) => (
                     <button
                       key={m} role="tab" aria-selected={mode === m}
                       onClick={() => { setMode(m); setError(""); }}
@@ -263,10 +275,16 @@ export function Checker({ children }: { children?: React.ReactNode }) {
                   </div>
                 )}
 
+                {mode === "qr" && (
+                  <p className="rounded-2xl border border-dashed border-white/25 px-4 py-4 text-center text-sm text-ink-soft">
+                    Scan with your camera or pick a QR image just below. UPI payment requests show who gets paid and how much.
+                  </p>
+                )}
+
                 {mode === "image" && (
                   <label className={`block cursor-pointer rounded-2xl border-2 border-dashed border-white/25 px-4 py-4 text-center font-bold text-white hover:border-white/50 ${busy ? "pointer-events-none opacity-60" : ""}`}>
                     Choose a screenshot
-                    <span className="block text-sm font-normal text-ink-soft">Read on your device</span>
+                    <span className="block text-sm font-normal text-ink-soft">Text and QR codes are read</span>
                     <input type="file" accept="image/*" className="sr-only" onChange={(e) => e.target.files?.[0] && readImage(e.target.files[0])} />
                   </label>
                 )}
@@ -300,6 +318,14 @@ export function Checker({ children }: { children?: React.ReactNode }) {
               );
             })}
           </ol>
+        )}
+
+        {mode === "qr" && <div id="qr" className="card mb-10 max-w-3xl p-5 sm:p-7"><QrScanner /></div>}
+        {mode === "image" && qr && (
+          <section className="card mb-10 max-w-3xl p-5 sm:p-7" aria-label="QR code in the screenshot">
+            <h2 className="text-xl text-white">This screenshot has a QR code</h2>
+            <QrResult raw={qr} />
+          </section>
         )}
 
         <div ref={resultRef} className="scroll-mt-24">

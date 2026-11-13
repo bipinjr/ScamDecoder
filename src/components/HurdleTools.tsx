@@ -176,7 +176,7 @@ async function decode(src: HTMLImageElement | HTMLVideoElement | HTMLCanvasEleme
   return null;
 }
 
-function QrResult({ raw }: { raw: string }) {
+export function QrResult({ raw }: { raw: string }) {
   const v: QrVerdict = analyzeQr(raw);
   const [u, setU] = useState<UnmaskReport | null>(null);
   const [err, setErr] = useState("");
@@ -202,6 +202,22 @@ function QrResult({ raw }: { raw: string }) {
       {u && <UnmaskReportView r={u} />}
     </div>
   );
+}
+
+// Finds a QR code in an image file, loading the decoder on first use. Returns its content, or null.
+export async function findQr(file: File): Promise<string | null> {
+  if (!window.jsQR) { // built-in BarcodeDetector exists on some desktops but cannot decode there, so always have the fallback
+    await new Promise<void>((ok) => {
+      const s = document.createElement("script");
+      s.src = "/vendor/jsQR.js"; s.onload = s.onerror = () => ok();
+      document.head.appendChild(s);
+    });
+  }
+  const img = new Image();
+  img.src = URL.createObjectURL(file);
+  try { await img.decode(); return await decode(img, img.naturalWidth, img.naturalHeight, true); }
+  catch { return null; }
+  finally { URL.revokeObjectURL(img.src); }
 }
 
 export function QrScanner({ initialFile, sampleKey }: { initialFile?: File | null; sampleKey?: number }) {

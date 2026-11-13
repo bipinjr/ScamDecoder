@@ -41,6 +41,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onPageFinished(WebView v, String url) {
+                android.util.Log.i("DECODR", "page finished: " + url + " toCheck=" + (toCheck != null) + " shared=" + (shared != null));
                 if (toCheck != null) {
                     String js = "sessionStorage.setItem('scamdecoder-prefill'," + JSONObject.quote(toCheck) + ");location.replace('/check');";
                     toCheck = null;
@@ -55,6 +56,12 @@ public class MainActivity extends Activity {
             }
         });
         web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(android.webkit.ConsoleMessage m) {
+                android.util.Log.i("DECODR", "page console: " + m.message() + " @" + m.lineNumber());
+                return true;
+            }
+
             @Override
             public boolean onShowFileChooser(WebView v, ValueCallback<Uri[]> cb, FileChooserParams p) {
                 if (filePick != null) filePick.onReceiveValue(null);
@@ -76,8 +83,10 @@ public class MainActivity extends Activity {
     }
 
     private void open(Intent i) {
-        if (i != null && Intent.ACTION_SEND.equals(i.getAction()) && i.getType() != null && i.getType().startsWith("image/")) {
-            Uri img = i.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (i != null && (Intent.ACTION_SEND.equals(i.getAction()) || Intent.ACTION_SEND_MULTIPLE.equals(i.getAction()))
+                && i.getType() != null && i.getType().startsWith("image/")) {
+            Uri img = sharedImage(i);
+            android.util.Log.i("DECODR", "shared image: " + img);
             if (img != null) { readImage(img); return; }
         }
         String text = null;
@@ -90,10 +99,22 @@ public class MainActivity extends Activity {
         web.loadUrl(base + "/share");
     }
 
+    /** Gallery apps put the image in EXTRA_STREAM, in ClipData, or both; take the first one found. */
+    private static Uri sharedImage(Intent i) {
+        Object extra = i.getExtras() == null ? null : i.getExtras().get(Intent.EXTRA_STREAM);
+        if (extra instanceof Uri) return (Uri) extra;
+        if (extra instanceof java.util.List && !((java.util.List<?>) extra).isEmpty() && ((java.util.List<?>) extra).get(0) instanceof Uri)
+            return (Uri) ((java.util.List<?>) extra).get(0);
+        if (i.getClipData() != null && i.getClipData().getItemCount() > 0) return i.getClipData().getItemAt(0).getUri();
+        return null;
+    }
+
     /** A shared screenshot: shrink it on the phone, have the server read its text, then check that text as a message. */
     private void readImage(Uri img) {
-        web.loadUrl(base + "/share?reading=1");
-        Toast.makeText(this, "Reading the screenshot…", Toast.LENGTH_SHORT).show();
+        web.loadDataWithBaseURL(base, "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'>"
+            + "<body style='margin:0;min-height:100vh;display:grid;place-items:center;background:#070a14;color:#f2f5ff;font:600 22px system-ui;text-align:center'>"
+            + "<div><div style='font-size:15px;color:#22e6c3;letter-spacing:.08em'>DECODR</div><p>Reading your screenshot…</p>"
+            + "<p style='font:400 15px system-ui;color:#9aa6c7'>The verdict appears in a few seconds.</p></div>", "text/html", "utf-8", null);
         new Thread(() -> {
             String text = null, error = "Could not read that image.";
             try {
@@ -106,8 +127,10 @@ public class MainActivity extends Activity {
                 try (java.util.Scanner s = new java.util.Scanner(in, "UTF-8").useDelimiter("\\A")) {
                     JSONObject j = new JSONObject(s.hasNext() ? s.next() : "{}");
                     if (j.has("text")) text = j.getString("text"); else error = j.optString("error", error);
+                    android.util.Log.i("DECODR", "read-image HTTP " + c.getResponseCode() + " text chars=" + (text == null ? -1 : text.length()) + " error=" + (text == null ? error : "-"));
                 }
             } catch (Exception e) {
+                android.util.Log.e("DECODR", "reading shared image failed", e);
                 error = "No internet connection, or the image could not be opened.";
             }
             final String t = text, err = error;

@@ -26,6 +26,7 @@
             <!-- Share from any app: plain or rich text (SMS, chats, email apps) and images (gallery screenshots). -->
             <intent-filter android:label="Check with DECODR">
                 <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.SEND_MULTIPLE" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/*" />
                 <data android:mimeType="image/*" />
