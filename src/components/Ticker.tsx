@@ -36,7 +36,7 @@ export function Ticker() {
   return (
     <section aria-label="Latest reports on the Scam Radar" className="relative border-y hairline bg-white/[0.02]">
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3 sm:px-6">
-        <Link href="/radar" className="flex shrink-0 items-center gap-2 text-sm font-semibold text-white">
+        <Link href="/radar" className="flex min-h-11 shrink-0 items-center gap-2 text-sm font-semibold text-white">
           <span className="relative flex h-2.5 w-2.5" aria-hidden>
             <span className="live-dot absolute inline-flex h-full w-full rounded-full bg-red opacity-75" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red" />
