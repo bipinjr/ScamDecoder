@@ -27,7 +27,16 @@ export function GetApp() {
       </div>
 
       <div className="rounded-2xl border hairline bg-white/[0.02] p-5">
-        <p className="font-semibold">On an Android phone: install the app</p>
+        <p className="font-semibold">On an Android phone: the DECODR app</p>
+        <p className="mt-1 text-sm text-ink-soft">
+          Checks every incoming SMS on the phone and warns you about scams before you reply. Download it on your phone, open the file,
+          allow installing from this source, then allow SMS and notifications when the app asks.
+        </p>
+        <a href="/downloads/decodr.apk" download className="btn-primary mt-4 inline-flex rounded-xl px-5 py-3">Download the Android app (APK)</a>
+      </div>
+
+      <div className="rounded-2xl border hairline bg-white/[0.02] p-5">
+        <p className="font-semibold">Any phone: add the web app to your home screen</p>
         <p className="mt-1 text-sm text-ink-soft">
           Then long-press any link or QR screenshot in WhatsApp, SMS or your browser, tap Share and pick DECODR to check it instantly.
           {ios && " On iPhone: tap the Share button in Safari, then Add to Home Screen."}

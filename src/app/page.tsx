@@ -3,6 +3,7 @@ import { CountUp } from "@/components/fx";
 import { Hero } from "@/components/Hero";
 import { WordReveal } from "@/components/WordReveal";
 import { Dissection } from "@/components/Dissection";
+import { Levers } from "@/components/Levers";
 import { Ticker } from "@/components/Ticker";
 import { CITATIONS } from "@/lib/principles";
 
@@ -45,6 +46,8 @@ export default function Home() {
       </section>
 
       <Dissection />
+
+      <Levers />
 
       {/* How it works */}
       <section className="mx-auto mt-28 grid max-w-7xl gap-14 px-4 sm:px-6 lg:grid-cols-[minmax(0,24rem)_1fr]">

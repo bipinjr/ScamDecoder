@@ -159,13 +159,14 @@ export function Result({
                     <p className={`${handwritten} text-2xl font-bold leading-tight`} style={{ color: v.pen }}>{t.name}</p>
                     {t.explanation && <p className="mt-1 text-ink-soft">{t.explanation}</p>}
                     {p && (
-                      <span
-                        className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-2.5 py-0.5 text-sm text-ink"
+                      <a
+                        href={`/#lever-${t.principle}`}
+                        className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.05] px-2.5 py-0.5 text-sm text-ink hover:border-white/40"
                         title={p.long}
                       >
                         <span className="h-1.5 w-1.5 rounded-full" style={{ background: v.pen }} aria-hidden />
                         Exploits: <b>{p.name}</b>
-                      </span>
+                      </a>
                     )}
                   </div>
                 </li>

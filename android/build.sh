@@ -31,4 +31,5 @@ javac -encoding UTF-8 --release 11 -cp "$JAR" -d out/classes $(find src out/gen 
 [ -f debug.keystore ] || keytool -genkeypair -keystore debug.keystore -storepass android -keypass android -alias debug -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Scam Decoder Debug"
 "$BT/apksigner.bat" sign --ks debug.keystore --ks-pass pass:android --out scam-decoder.apk out/aligned.apk
 "$BT/apksigner.bat" verify scam-decoder.apk
-echo "Built android/scam-decoder.apk for $BASE"
+cp scam-decoder.apk ../public/downloads/decodr.apk # served at /downloads/decodr.apk
+echo "Built android/scam-decoder.apk for $BASE (copied to public/downloads/decodr.apk)"
