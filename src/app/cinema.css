@@ -20,7 +20,7 @@ h1 { text-transform: uppercase; letter-spacing: .06em !important; font-weight: 7
 .phone { border-radius: 28px !important; background: #151515 !important; box-shadow: 0 0 0 1px #262626, 0 60px 120px -40px #000, 0 0 80px -30px rgb(255 31 45 / .45) !important; }
 .card { background: #0b0b0b !important; border: 1px solid var(--line) !important; box-shadow: none !important; backdrop-filter: none !important; }
 .hairline { border-color: var(--line) !important; }
-.btn-ghost { border-color: #2e2e2e !important; background: transparent !important; }
+.btn-ghost { border: 1px solid #4a4a4a !important; background: #111 !important; color: #fff !important; }
 .btn-ghost:hover { border-color: var(--red) !important; background: rgb(255 31 45 / .06) !important; }
 
 /* Hover / press: a red edge glow and a small lift, interruptible (transitions, named properties). */
@@ -87,9 +87,25 @@ h1 { text-transform: uppercase; letter-spacing: .06em !important; font-weight: 7
     .sd-scope { animation: cine-parallax linear both; animation-timeline: scroll(root); animation-range: 0 90vh; }
     @keyframes cine-parallax { to { transform: translateY(70px) scale(1.06); } }
     .sd-hero > div:first-child { animation: cine-drift linear both; animation-timeline: scroll(root); animation-range: 0 80vh; }
-    @keyframes cine-drift { to { transform: translateY(-40px); opacity: .35; } }
+    @keyframes cine-drift { to { transform: translateY(-40px); } } /* moves only: text never fades behind the backdrop */
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .sd-hero > div:first-child > * { animation: none; opacity: 1; transform: none; filter: none; }
+}
+
+/* ---------- Phones: nothing overlaps, buttons stay clear, motion stays light ---------- */
+@media (max-width: 640px) {
+  .sd-tag, .sd-note { display: none !important; }          /* the example labels crowd the hook on a narrow screen */
+  .sd-scope { width: min(78%, 19rem) !important; margin: 0 auto !important; }
+  .fx-scan { opacity: .18; }
+  .fx-led { opacity: .3; }
+  .fx-vignette { background: radial-gradient(140% 100% at 50% 20%, transparent 50%, #000 100%); }
+  .btn-primary, .btn-ghost { min-height: 48px; }          /* thumb-sized, never cramped */
+}
+@media (max-width: 767px) {
+  /* Scroll-linked effects are for large screens; on phones content simply appears, no blur, no parallax. */
+  main > section, main section .card, main ul > li.card, #levers li, .sd-scope, .sd-hero > div:first-child, .word-reveal .word, .reveal {
+    animation: none !important; opacity: 1 !important; filter: none !important; transform: none !important;
+  }
 }

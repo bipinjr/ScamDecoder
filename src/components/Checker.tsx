@@ -229,12 +229,12 @@ QR code in this image contains: ${found}` : extracted;
 
               {/* Compose */}
               <div className="border-t hairline bg-sheet p-3">
-                <div role="tablist" aria-label="How did you get it?" className="mb-3 grid grid-cols-4 gap-1 rounded-xl bg-white/[0.05] p-1 text-[0.92rem]">
-                  {([["text", "Message"], ["voice", "Call / voice"], ["image", "Screenshot"], ["qr", "QR code"]] as const).map(([m, label]) => (
+                <div role="tablist" aria-label="How did you get it?" className="mb-3 grid grid-cols-2 gap-1 rounded-xl sm:grid-cols-4 bg-white/[0.05] p-1 text-[0.92rem]">
+                  {([["text", "Message"], ["voice", "Voice"], ["image", "Screenshot"], ["qr", "QR code"]] as const).map(([m, label]) => (
                     <button
                       key={m} role="tab" aria-selected={mode === m}
                       onClick={() => { setMode(m); setError(""); }}
-                      className={`rounded-lg px-2 py-1.5 font-bold transition ${mode === m ? "bg-white/[0.14] text-white" : "text-ink-soft hover:text-white"}`}
+                      className={`min-h-11 rounded-lg px-2 py-2 font-bold transition-colors duration-200 ${mode === m ? "bg-[#ff1f2d] text-white" : "text-ink-soft hover:text-white"}`}
                     >
                       {label}
                     </button>
@@ -292,9 +292,9 @@ QR code in this image contains: ${found}` : extracted;
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-center gap-2">
-            <label htmlFor="lang" className="text-sm text-ink-soft">Explain in</label>
-            <select id="lang" value={language} onChange={(e) => setLanguage(e.target.value)} className="rounded-xl border border-white/12 bg-sheet px-3 py-1.5 font-semibold text-ink">
+          <div className="mt-4 flex items-center justify-center gap-3 px-2">
+            <label htmlFor="lang" className="whitespace-nowrap text-sm text-ink-soft">Explain in</label>
+            <select id="lang" value={language} onChange={(e) => setLanguage(e.target.value)} className="min-w-0 max-w-[13rem] flex-1 rounded-xl border border-white/12 bg-sheet px-3 py-2 font-semibold text-ink">
               {LANGUAGES.map((l) => <option key={l} value={l}>{LANGUAGE_NATIVE[l] ?? l}</option>)}
             </select>
           </div>
