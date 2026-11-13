@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>DECODR</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="bar">
+    <img src="icons/48.png" alt="" width="26" height="26">
+    <span class="name">DECODR</span>
+    <span class="pill" id="pill"><i></i><span id="pill-text">Guarding</span></span>
+    <label class="switch" title="Turn protection on or off">
+      <input type="checkbox" id="enabled" checked>
+      <span class="track" aria-hidden="true"><span class="thumb"></span></span>
+      <span class="sr">Protection</span>
+    </label>
+  </header>
+
+  <div class="stage">
+    <!-- Home -->
+    <section id="home" class="view">
+      <div class="hero" id="hero">
+        <span class="beam" aria-hidden="true"></span>
+        <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fg" cx="60" cy="60" r="52"/>
+          <path class="ring-shield" d="M60 34 41 41v13c0 12 8 21 19 25 11-4 19-13 19-25V41Z"/>
+          <path class="ring-tick" d="m51 57 6 6 12-13"/>
+        </svg>
+        <div class="hero-text">
+          <p class="state" id="state">You're protected</p>
+          <p class="sub" id="state-sub">Dangerous links are blocked before they open.</p>
+        </div>
+        <span class="pulse" aria-hidden="true"></span>
+      </div>
+
+      <div class="site lit" id="site" aria-live="polite">
+        <span class="site-ic" id="site-ic" aria-hidden="true"></span>
+        <div class="site-text">
+          <span class="site-label">This site</span>
+          <code id="site-host">Checking…</code>
+        </div>
+        <span class="site-verdict" id="site-verdict"></span>
+      </div>
+      <ul class="site-reasons" id="site-reasons" hidden></ul>
+
+      <dl class="stats">
+        <div class="lit"><dt>Threats blocked</dt><dd id="stat-blocked">0</dd></div>
+        <div class="lit"><dt>Phishing sites known</dt><dd id="stat-feed">…</dd></div>
+      </dl>
+
+      <h2 class="label">Check something</h2>
+      <div class="tiles">
+        <button class="tile lit" data-open="message" style="--i:0"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4Z"/></svg></span><b>Message</b><small>SMS, WhatsApp, email</small></button>
+        <button class="tile lit" data-open="link" style="--i:1"><span class="ic"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg></span><b>Link</b><small>Where it really goes</small></button>
+        <button class="tile lit wide" data-open="qr" style="--i:2"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2M14 18h2v2M18 18h2v2"/></svg></span><b>Scan a QR</b><small>UPI requests, posters, screenshots</small></button>
+      </div>
+
+      <div id="recent-wrap" hidden>
+        <h2 class="label">Recently blocked</h2>
+        <ul id="recent" class="recent"></ul>
+      </div>
+
+      <a href="#" class="foot" id="open-app"><span>Screenshot or call recording?</span><b>Open the full checker →</b></a>
+    </section>
+
+    <!-- Tools -->
+    <section id="tool" class="view" hidden>
+      <button class="back" id="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Back</button>
+
+      <div data-panel="message" hidden>
+        <h1>Check a message</h1>
+        <p class="lead">Paste the SMS, WhatsApp or email text. We'll show every trick it uses.</p>
+        <textarea id="msg" rows="5" placeholder="Dear customer, your account will be blocked today…"></textarea>
+        <button class="primary" id="check-msg">Check message</button>
+      </div>
+
+      <div data-panel="link" hidden>
+        <h1>Check a link</h1>
+        <p class="lead">We follow every redirect, test for cloaking, and check where it really lands.</p>
+        <input id="link" type="url" placeholder="https://sbi-kyc-update.xyz/verify">
+        <button class="primary" id="check-link">Check link</button>
+      </div>
+
+      <div data-panel="qr" hidden>
+        <h1>Scan a QR</h1>
+        <p class="lead">A UPI QR can only take money. We decode it on your device and show who gets paid.</p>
+        <label class="drop" for="qr-file">
+          <input id="qr-file" type="file" accept="image/*" hidden>
+          <span class="drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"/></svg></span>
+          <b>Choose or paste a QR</b>
+          <span>Or right-click any QR on a page</span>
+        </label>
+      </div>
+
+      <div id="result" aria-live="polite"></div>
+    </section>
+  </div>
+
+  <footer class="settings">
+    <details>
+      <summary>Settings</summary>
+      <label for="api">Server for deep checks</label>
+      <input id="api" type="url" placeholder="http://localhost:3000">
+    </details>
+  </footer>
+
+  <script src="guard.js"></script>
+  <script src="vendor/jsQR.js"></script>
+  <script src="qr.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

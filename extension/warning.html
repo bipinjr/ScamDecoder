@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blocked: dangerous site · DECODR</title>
+  <link rel="icon" href="icons/48.png">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="warning.css">
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span><span class="scan"></span></div>
+
+  <header class="top">
+    <span class="mark"><img src="icons/48.png" alt="" width="28" height="28">DECODR</span>
+    <span class="guard"><i></i>Protection on</span>
+  </header>
+
+  <main class="wrap">
+    <section class="verdict">
+      <div class="shield" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><path class="s" d="M32 5 9 13.5v16C9 44 18.5 54.5 32 59c13.5-4.5 23-15 23-29.5v-16Z"/><path class="x" d="m24 24 16 16m0-16L24 40"/></svg>
+      </div>
+      <h1>We stopped this page.<br><em>It looks like a scam.</em></h1>
+      <p class="lead">Pages like this steal passwords, OTPs and UPI PINs. Nothing from it has loaded on your device.</p>
+    </section>
+
+    <section class="card addr" aria-labelledby="addr-h">
+      <h2 id="addr-h" class="k">The address you were sent to</h2>
+      <p class="host" id="host">…</p>
+      <p class="path" id="path"></p>
+      <div class="meter" aria-hidden="true"><span id="meter-fill"></span></div>
+      <p class="risk"><b id="risk">0</b> risk score out of 100</p>
+    </section>
+
+    <section class="card why" aria-labelledby="why-h">
+      <h2 id="why-h" class="k">Why we stopped it</h2>
+      <ul id="reasons"></ul>
+    </section>
+
+    <div class="actions">
+      <button class="primary" id="back">Go back to safety</button>
+      <a class="secondary" href="https://cybercrime.gov.in" target="_blank" rel="noreferrer">Report it on cybercrime.gov.in</a>
+    </div>
+
+    <details class="risk-open">
+      <summary>I know this site and want to open it anyway</summary>
+      <p>Only continue if you are certain it is genuine. Never type an OTP, PIN or password on it.</p>
+      <button class="ghost" id="proceed">Open the site for this session</button>
+    </details>
+
+    <p class="help">Lost money? Call <b>1930</b> straight away. The sooner you call, the more likely the bank can freeze it.</p>
+  </main>
+  <script src="warning.js"></script>
+</body>
+</html>
