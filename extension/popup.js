@@ -1,4 +1,4 @@
-const DEFAULT_API = "http://localhost:3000";
+const DEFAULT_API = "https://scamdecoderjr.vercel.app";
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const show = (html) => { $("#result").innerHTML = html; };
