@@ -24,7 +24,7 @@ import java.util.List;
  * Safe links go straight on to a real browser; risky ones are stopped with the reasons, like the browser extension.
  */
 public class LinkActivity extends Activity {
-    private static final int BG = 0xFF070A14, CARD = 0xFF0E1426, INK = 0xFFF2F5FF, SOFT = 0xFF9AA6C7, RED = 0xFFFF5364, TEAL = 0xFF22E6C3;
+    private static final int BG = 0xFF050505, CARD = 0xFF101010, INK = 0xFFF5F5F5, SOFT = 0xFF9A9A9A, RED = 0xFFFF1F2D, TEAL = 0xFFFF1F2D;
 
     @Override
     protected void onCreate(Bundle b) {
@@ -93,7 +93,7 @@ public class LinkActivity extends Activity {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(dp(18), dp(14), dp(18), dp(14));
-        GradientDrawable cd = new GradientDrawable(); cd.setColor(CARD); cd.setCornerRadius(dp(16)); cd.setStroke(dp(1), 0x55FF5364);
+        GradientDrawable cd = new GradientDrawable(); cd.setColor(CARD); cd.setCornerRadius(dp(16)); cd.setStroke(dp(1), 0x66FF1F2D);
         card.setBackground(cd);
         LinearLayout.LayoutParams clp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         clp.topMargin = dp(18);

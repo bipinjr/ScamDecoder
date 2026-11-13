@@ -112,9 +112,9 @@ public class MainActivity extends Activity {
     /** A shared screenshot: shrink it on the phone, have the server read its text, then check that text as a message. */
     private void readImage(Uri img) {
         web.loadDataWithBaseURL(base, "<!doctype html><meta name=viewport content='width=device-width,initial-scale=1'>"
-            + "<body style='margin:0;min-height:100vh;display:grid;place-items:center;background:#070a14;color:#f2f5ff;font:600 22px system-ui;text-align:center'>"
-            + "<div><div style='font-size:15px;color:#22e6c3;letter-spacing:.08em'>DECODR</div><p>Reading your screenshot…</p>"
-            + "<p style='font:400 15px system-ui;color:#9aa6c7'>The verdict appears in a few seconds.</p></div>", "text/html", "utf-8", null);
+            + "<body style='margin:0;min-height:100vh;display:grid;place-items:center;background:#050505;color:#f5f5f5;font:600 22px system-ui;text-align:center'>"
+            + "<div><div style='font-size:15px;color:#d7dbe0;letter-spacing:.08em'>DECODR</div><p>Reading your screenshot…</p>"
+            + "<p style='font:400 15px system-ui;color:#9a9a9a'>The verdict appears in a few seconds.</p></div>", "text/html", "utf-8", null);
         new Thread(() -> {
             String text = null, error = "Could not read that image.";
             try {

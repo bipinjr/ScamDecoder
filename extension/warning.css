@@ -1,4 +1,4 @@
-:root { --bg: #070a14; --card: rgb(14 20 38 / .78); --line: rgb(255 255 255 / .09); --ink: #ecf3f1; --soft: #9aa8a4; --mute: #64716d; --red: #ff5364; --red-deep: #e11d48; --mint: #7b6cff; --on-mint: #ffffff;
+:root { --bg: #050505; --card: rgb(16 16 16 / .78); --line: rgb(255 255 255 / .09); --ink: #ecf3f1; --soft: #9aa8a4; --mute: #64716d; --red: #ff5364; --red-deep: #e11d48; --mint: #ff1f2d; --on-mint: #ffffff;
   --ease: cubic-bezier(.2, .8, .2, 1); --spring: cubic-bezier(.3, 1.45, .5, 1);
   --serif: "Space Grotesk", "Inter", system-ui, sans-serif; --sans: "Inter", "Segoe UI", system-ui, sans-serif; --mono: "JetBrains Mono", Consolas, monospace; }
 * { box-sizing: border-box; }
@@ -17,7 +17,7 @@ body { min-height: 100vh; color: var(--ink); font: 16px/1.6 var(--sans); -webkit
 .mark { display: inline-flex; align-items: center; gap: 10px; font: 700 26px/1 var(--serif); }
 .mark img { border-radius: 8px; }
 .mark i { color: var(--mint); }
-.guard { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px; border: 1px solid rgb(123 108 255 / .3); background: rgb(123 108 255 / .07); color: var(--mint); font: 500 13px var(--sans); }
+.guard { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 99px; border: 1px solid rgb(255 31 45 / .3); background: rgb(255 31 45 / .07); color: var(--mint); font: 500 13px var(--sans); }
 .guard i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
 
 .wrap { position: relative; z-index: 1; width: min(640px, 100% - 32px); margin: 0 auto; padding: 18px 0 64px; }
@@ -47,7 +47,7 @@ h1 em { color: var(--red); }
 
 .actions { margin-top: 26px; display: grid; gap: 10px; }
 .primary { width: 100%; border: 0; border-radius: 16px; padding: 17px; background: var(--mint); color: var(--on-mint); font: 600 17px var(--sans); cursor: pointer;
-  box-shadow: 0 0 0 1px rgb(123 108 255 / .55), 0 22px 50px -16px rgb(123 108 255 / .65); transition: transform .35s var(--spring), filter .2s; }
+  box-shadow: 0 0 0 1px rgb(255 31 45 / .55), 0 22px 50px -16px rgb(255 31 45 / .65); transition: transform .35s var(--spring), filter .2s; }
 .primary:hover { transform: translateY(-2px); filter: brightness(1.06); }
 .primary:active { transform: scale(.985); }
 .secondary { text-align: center; padding: 13px; border-radius: 14px; border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 500; transition: border-color .2s, background .2s; }
@@ -86,5 +86,9 @@ h1 em { color: var(--red); }
 
 /* DECODR brand: wordmark, gradient primary action, no italic display. */
 .mark { letter-spacing: .08em; font-size: 22px !important; }
-.primary { background: linear-gradient(135deg, #22e6c3, #7b6cff) !important; color: #070a14 !important; font-weight: 700 !important; }
+.primary { background: #ff1f2d !important; color: #ffffff !important; font-weight: 600 !important; }
 h1 em { font-style: normal; color: var(--red); }
+
+/* Cinematic restyle: near-black, signal red, sharp corners. */
+.card, .tile, .site, .stats div, textarea, input, .drop, .seg, .verdict, .why, .addr, .secondary, .ghost { border-radius: 4px !important; }
+.primary { border-radius: 999px !important; }

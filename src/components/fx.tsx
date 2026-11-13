@@ -113,7 +113,7 @@ export function CursorLight() {
   return <div ref={ref} className="cursor-light" aria-hidden />;
 }
 
-const CONFETTI = ["#5b49e6", "#5b49e6", "#7b6cff", "#f59e0b", "#e11d48", "#0ea5e9"];
+const CONFETTI = ["#c4121f", "#c4121f", "#ff1f2d", "#f59e0b", "#e11d48", "#0ea5e9"];
 
 // One-shot confetti burst from the middle of the screen. Renders nothing under reduced motion.
 export function Confetti({ count = 46, colors = CONFETTI }: { count?: number; colors?: string[] }) {

@@ -4,7 +4,7 @@ export const runtime = "nodejs";
 
 function handOff(text: string, image: boolean) {
   const payload = JSON.stringify(text).replace(/</g, "\\u003c");
-  const html = `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><body style="background:#070a14"><script>
+  const html = `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><body style="background:#050505"><script>
 try { sessionStorage.setItem("scamdecoder-share", ${payload}); } catch (e) {}
 location.replace("/share?shared=2${image && !text ? "&image=1" : ""}");
 </script></body>`;

@@ -5,8 +5,17 @@
   <title>DECODR</title>
   <link rel="stylesheet" href="fonts.css">
   <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="fx.css">
 </head>
 <body>
+  <div class="fx" aria-hidden="true">
+    <div class="burst"></div><div class="led"></div>
+    <svg viewBox="0 0 400 600" preserveAspectRatio="xMidYMid slice">
+      <path class="tr" d="M-10 90H120L150 120H280L310 90H420"/><path class="tr" d="M-10 330H90L120 300H300L330 330H420"/><path class="tr" d="M-10 520H160L190 490H420"/><path class="tr" d="M70 -10V160L100 190V420"/><path class="tr" d="M340 -10V240L310 270V610"/>
+      <path class="pu" d="M-10 90H120L150 120H280L310 90H420"/><path class="pu" d="M-10 330H90L120 300H300L330 330H420"/><path class="pu" d="M-10 520H160L190 490H420"/><path class="pu" d="M70 -10V160L100 190V420"/><path class="pu" d="M340 -10V240L310 270V610"/>
+    </svg>
+    <div class="scan"></div>
+  </div>
   <header class="bar">
     <img src="icons/48.png" alt="" width="26" height="26">
     <span class="name">DECODR</span>
@@ -20,7 +29,7 @@
 
   <div class="stage">
     <!-- Home -->
-    <section id="home" class="view">
+    <section id="home" class="view rise">
       <div class="hero" id="hero">
         <span class="beam" aria-hidden="true"></span>
         <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">

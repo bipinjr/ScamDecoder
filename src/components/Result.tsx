@@ -75,7 +75,7 @@ export function Result({
   return (
     <div className={`result-in ${result.verdict === "scam" ? "shake" : ""}`} style={{ "--pen": v.pen } as CSSProperties}>
       {result.verdict === "scam" && <div className="flash" aria-hidden />}
-      {result.verdict === "likely_safe" && <Confetti colors={["#5b49e6", "#5b49e6", "#7b6cff", "#f59e0b"]} />}
+      {result.verdict === "likely_safe" && <Confetti colors={["#c4121f", "#c4121f", "#ff1f2d", "#f59e0b"]} />}
       {/* Verdict */}
       <section className="flex flex-wrap items-center gap-x-8 gap-y-5">
         <div className="stamp px-5 py-2 text-3xl font-bold uppercase sm:text-4xl" style={{ color: v.pen }}>
@@ -111,7 +111,7 @@ export function Result({
         )}
         <a
           href={`https://wa.me/?text=${share}`} target="_blank" rel="noreferrer"
-          className="rounded-2xl bg-teal px-5 py-3 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#5b49e6]"
+          className="rounded-2xl bg-teal px-5 py-3 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#c4121f]"
         >
           Warn my family on WhatsApp
         </a>
@@ -122,7 +122,7 @@ export function Result({
 
       {result.reported && (
         <p className="card mt-6 flex flex-wrap items-center gap-3 px-5 py-4 text-ink" role="status">
-          <span className="h-2 w-2 rounded-full bg-[#22e6c3] shadow-[0_0_10px_#22e6c3]" aria-hidden />
+          <span className="h-2 w-2 rounded-full bg-[#d7dbe0] shadow-[0_0_10px_#d7dbe0]" aria-hidden />
           Added to the <a href="/radar" className="font-semibold text-white underline underline-offset-4">Scam Radar</a> to warn others. Phone numbers, OTPs and account numbers were removed first.
         </p>
       )}

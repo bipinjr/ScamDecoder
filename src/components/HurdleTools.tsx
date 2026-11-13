@@ -134,7 +134,7 @@ export function Unmasker({ initial, autoRun = false, demo }: { initial?: string;
       <form onSubmit={(e) => { e.preventDefault(); run(); }}>
         <label htmlFor="um" className="fig">Short link, ad link, any link</label>
         <input id="um" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://bit.ly/…" inputMode="url"
-          className="mt-2 w-full rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-3.5 font-mono text-[0.95rem] text-ink outline-none transition placeholder:text-ink-soft/50 focus:border-teal focus:shadow-[0_0_0_4px_rgb(94_234_212/.12)]" />
+          className="mt-2 w-full rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-3.5 font-mono text-[0.95rem] text-ink outline-none transition placeholder:text-ink-soft/50 focus:border-teal focus:shadow-[0_0_0_4px_rgb(255_31_45/.12)]" />
         <div className={`mt-3 flex flex-wrap gap-2 ${autoRun ? "hidden" : ""}`}>
           <button type="button" onClick={() => { const u = `${location.origin}/lab/go`; setUrl(u); run(u); }} className="rounded-full border border-red/40 bg-red/[0.06] px-3 py-1 font-mono text-xs text-red transition hover:border-red">demo: 3 hops + cloaked login</button>
           {SAMPLES.map((s) => <button key={s} type="button" onClick={() => { setUrl(s); run(s); }} className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs text-ink-soft transition hover:border-teal hover:text-ink">{s.replace(/^https?:\/\//, "")}</button>)}

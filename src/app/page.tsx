@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         <ol className="steps-track relative space-y-16 pl-16">
           <svg className="absolute left-[1.15rem] top-2 h-[calc(100%-1rem)] w-6 overflow-visible" viewBox="0 0 24 100" preserveAspectRatio="none" aria-hidden>
-            <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#5b49e6" /><stop offset="1" stopColor="#7b6cff" /></linearGradient></defs>
+            <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#c4121f" /><stop offset="1" stopColor="#ff1f2d" /></linearGradient></defs>
             <path className="pen-path" pathLength={1} d="M12 0 C 2 12, 22 22, 12 34 S 2 56, 12 67 S 22 88, 12 100" fill="none" stroke="url(#g)" strokeWidth="2.5" strokeLinecap="round" />
           </svg>
           {STEPS.map((s, i) => (

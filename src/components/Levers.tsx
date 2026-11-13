@@ -11,18 +11,18 @@ export function Levers() {
           these seven, from Cambridge research into how scam victims are fooled.
         </p>
       </div>
-      <ul className="mt-12 grid gap-px overflow-hidden rounded-2xl border hairline bg-[rgb(123_108_255/.14)] sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-12 grid gap-px overflow-hidden rounded-2xl border hairline bg-[#1a1a1a] sm:grid-cols-2 lg:grid-cols-4">
         {PRINCIPLE_IDS.map((id) => {
           const p = PRINCIPLES[id];
           return (
-            <li key={id} id={`lever-${id}`} className="flex flex-col bg-[#0a0f1e] p-6">
+            <li key={id} id={`lever-${id}`} className="flex flex-col bg-[#0a0a0a] p-6">
               <h3 className="text-white">{p.name}</h3>
               <p className="mt-2 text-ink-soft">{p.long}</p>
               <p className="mt-auto pt-5 font-mono text-sm text-[#ff8a96]">“{p.example}”</p>
             </li>
           );
         })}
-        <li className="flex flex-col justify-center bg-[#0a0f1e] p-6 text-sm text-ink-soft">
+        <li className="flex flex-col justify-center bg-[#0a0a0a] p-6 text-sm text-ink-soft">
           <p>Source</p>
           <a className="mt-1 font-semibold text-white underline underline-offset-4" href={CITATIONS.stajano.url} target="_blank" rel="noreferrer">
             {CITATIONS.stajano.label}: {CITATIONS.stajano.title}
