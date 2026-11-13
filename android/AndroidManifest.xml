@@ -23,10 +23,12 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter>
+            <!-- Share from any app: plain or rich text (SMS, chats, email apps) and images (gallery screenshots). -->
+            <intent-filter android:label="Check with DECODR">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/*" />
+                <data android:mimeType="image/*" />
             </intent-filter>
             <!-- "DECODR" in the menu that appears when you select text in any app (email, SMS, chat). -->
             <intent-filter android:label="Check with DECODR">

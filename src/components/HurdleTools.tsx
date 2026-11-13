@@ -109,7 +109,10 @@ export function Unmasker({ initial, autoRun = false, demo }: { initial?: string;
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [r, setR] = useState<UnmaskReport | null>(null);
+  const verdict = useRef<HTMLDivElement>(null);
   useEffect(() => { if (autoRun && initial) run(initial); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // A shared link: bring the verdict into view as soon as it arrives.
+  useEffect(() => { if (autoRun && r) verdict.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [r, autoRun]);
   // A hint asked to see itself in action: run the demo lab, then bring its part of the report into view.
   useEffect(() => {
     if (!demo) return;
@@ -132,7 +135,7 @@ export function Unmasker({ initial, autoRun = false, demo }: { initial?: string;
         <label htmlFor="um" className="fig">Short link, ad link, any link</label>
         <input id="um" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://bit.ly/…" inputMode="url"
           className="mt-2 w-full rounded-2xl border border-white/12 bg-white/[0.04] px-4 py-3.5 font-mono text-[0.95rem] text-ink outline-none transition placeholder:text-ink-soft/50 focus:border-teal focus:shadow-[0_0_0_4px_rgb(94_234_212/.12)]" />
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className={`mt-3 flex flex-wrap gap-2 ${autoRun ? "hidden" : ""}`}>
           <button type="button" onClick={() => { const u = `${location.origin}/lab/go`; setUrl(u); run(u); }} className="rounded-full border border-red/40 bg-red/[0.06] px-3 py-1 font-mono text-xs text-red transition hover:border-red">demo: 3 hops + cloaked login</button>
           {SAMPLES.map((s) => <button key={s} type="button" onClick={() => { setUrl(s); run(s); }} className="rounded-full border border-white/10 px-3 py-1 font-mono text-xs text-ink-soft transition hover:border-teal hover:text-ink">{s.replace(/^https?:\/\//, "")}</button>)}
         </div>
@@ -142,7 +145,7 @@ export function Unmasker({ initial, autoRun = false, demo }: { initial?: string;
         </button>
       </form>
       {err && <p className="mt-4 text-red" role="alert">{err}</p>}
-      {r && <UnmaskReportView r={r} />}
+      <div ref={verdict} className="scroll-mt-20">{r && <UnmaskReportView r={r} />}</div>
     </div>
   );
 }

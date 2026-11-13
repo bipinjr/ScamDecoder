@@ -9,7 +9,8 @@ const URL_RE = /(https?:\/\/[^\s<>"']+|\b(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s<>"'
 
 function classify(text: string): Inbox {
   const m = text.match(URL_RE);
-  if (m) return { kind: "link", url: m[1].replace(/[).,]+$/, "") };
+  // Only a bare link (little else around it) goes to the link check; a message with a link gets the full message check.
+  if (m && text.replace(m[1], "").trim().length < 25) return { kind: "link", url: m[1].replace(/[).,]+$/, "") };
   return text.trim() ? { kind: "text", text } : { kind: "empty" };
 }
 

@@ -11,7 +11,7 @@ const VISION_MODEL = "qwen/qwen3.8-27b";
 
 export type Media = { bytes: ArrayBuffer; type: string };
 
-async function imageToText(m: Media): Promise<string> {
+export async function imageToText(m: Media): Promise<string> {
   const url = `data:${m.type};base64,${Buffer.from(m.bytes).toString("base64")}`;
   const res = await groq.chat.completions.create({
     model: VISION_MODEL,
