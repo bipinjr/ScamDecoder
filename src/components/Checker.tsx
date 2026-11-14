@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, type CSSProperties, useEffect } from "react";
+import { useDeferredValue, useMemo, useRef, useState, type CSSProperties, useEffect } from "react";
 import { LANGUAGES, LANGUAGE_NATIVE, OCR_LANG, type Analysis } from "@/lib/shared";
 import { SAMPLES } from "@/lib/samples";
 import { findMatches } from "@/lib/signals";
@@ -40,8 +40,10 @@ export function Checker({ children }: { children?: React.ReactNode }) {
   const resultRef = useRef<HTMLDivElement>(null);
   const busy = stage !== "idle" && stage !== "done";
 
-  const preview = text.trim() ? text : SAMPLES[0].text;
-  const liveCount = useMemo(() => (text.trim() ? findMatches(text).length : 0), [text]);
+  // Typing stays instant: the preview and its red flags catch up between keystrokes instead of blocking each one.
+  const typed = useDeferredValue(text);
+  const preview = typed.trim() ? typed : SAMPLES[0].text;
+  const liveCount = useMemo(() => (typed.trim() ? findMatches(typed).length : 0), [typed]);
 
   async function analyze(input: string, source: "text" | "voice" | "image") {
     if (input.trim().length < 5) return setError("Paste the message you received to check it.");

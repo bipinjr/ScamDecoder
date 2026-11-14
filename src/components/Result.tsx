@@ -87,7 +87,7 @@ export function Result({
           </div>
           <p className="leading-tight text-ink-soft">risk<br />out of 100</p>
         </div>
-        <p className="w-full text-ink-soft sm:w-auto sm:flex-1 sm:text-right">
+        <p className="border border-white/15 bg-white/[0.04] px-3 py-1.5 font-mono text-xs uppercase tracking-[0.18em] text-ink">
           {source === "voice" ? "Voice clip · " : source === "image" ? "Screenshot · " : ""}{result.scamType}
         </p>
       </section>
