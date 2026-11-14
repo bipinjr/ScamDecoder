@@ -25,7 +25,7 @@ export async function imageToText(m: Media): Promise<string> {
         { type: "image_url", image_url: { url } },
       ],
     }],
-  });
+  }, { maxRetries: 0, timeout: 15000 }); // free tier allows ~1 image a minute: fail fast so the app can read it on the phone instead of waiting ~18 s
   return res.choices[0]?.message?.content?.trim() ?? "";
 }
 

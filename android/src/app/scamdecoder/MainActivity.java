@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
     private String base;
     private String shared; // text waiting to be handed to the page
     private String toCheck; // text read from a shared screenshot, checked as a message
+    private String toCheckImage; // the screenshot itself (data URL), when the server could not read it: the page reads it on the phone
     private ValueCallback<Uri[]> filePick;
     private Uri waitingImage; // a shared photo we could not open yet: read again once photo access is allowed
 
@@ -65,6 +66,12 @@ public class MainActivity extends Activity {
                     // Hand the text over and signal the page; reloading here raced the page's own start-up and lost the check.
                     String js = "sessionStorage.setItem('scamdecoder-prefill'," + JSONObject.quote(toCheck) + ");dispatchEvent(new Event('decodr-prefill'));";
                     toCheck = null;
+                    v.evaluateJavascript(js, null);
+                    return;
+                }
+                if (toCheckImage != null) {
+                    String js = "sessionStorage.setItem('scamdecoder-prefill-image'," + JSONObject.quote(toCheckImage) + ");dispatchEvent(new Event('decodr-prefill'));";
+                    toCheckImage = null;
                     v.evaluateJavascript(js, null);
                     return;
                 }
@@ -137,8 +144,9 @@ public class MainActivity extends Activity {
             + "<p style='font:400 15px system-ui;color:#9a9a9a'>The verdict appears in a few seconds.</p></div>", "text/html", "utf-8", null);
         new Thread(() -> {
             String text = null, error = "Could not read that image.";
+            byte[] jpeg = null;
             try {
-                byte[] jpeg = shrink(img);
+                jpeg = shrink(img);
                 java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(base + "/api/read-image").openConnection();
                 c.setConnectTimeout(8000); c.setReadTimeout(30000); c.setRequestMethod("POST"); c.setDoOutput(true);
                 c.setRequestProperty("content-type", "image/jpeg");
@@ -158,8 +166,11 @@ public class MainActivity extends Activity {
                 error = "No internet connection, or the image could not be opened.";
             }
             final String t = text, err = error;
+            final String dataUrl = text == null && jpeg != null ? "data:image/jpeg;base64," + android.util.Base64.encodeToString(jpeg, android.util.Base64.NO_WRAP) : null;
             runOnUiThread(() -> {
-                // Could not read it: say why, and open the check page so the screenshot can be picked there instead.
+                // Server busy or no text found: hand the screenshot to the page, which reads it (and any QR) on the phone.
+                if (t == null && dataUrl != null) { toCheckImage = dataUrl; web.loadUrl(base + "/check"); return; }
+                // Could not even open it: say why, and open the check page so the screenshot can be picked there instead.
                 if (t == null) { Toast.makeText(this, err + " Pick the screenshot here instead.", Toast.LENGTH_LONG).show(); web.loadUrl(base + "/check"); return; }
                 toCheck = t;
                 web.loadUrl(base + "/check");

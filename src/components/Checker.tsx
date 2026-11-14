@@ -31,7 +31,15 @@ export function Checker({ children }: { children?: React.ReactNode }) {
   // A message handed over by the phone app or the share page is checked straight away. The app may hand it over before or
   // after this page has started, so take it on start and again when the app signals it (never by reloading the page).
   useEffect(() => {
-    const take = () => { try { const t = sessionStorage.getItem("scamdecoder-prefill"); if (t) { sessionStorage.removeItem("scamdecoder-prefill"); setText(t); analyze(t, "text"); } } catch {} };
+    const take = () => {
+      try {
+        const t = sessionStorage.getItem("scamdecoder-prefill");
+        if (t) { sessionStorage.removeItem("scamdecoder-prefill"); setText(t); analyze(t, "text"); return; }
+        // The app could not get the screenshot read on the server (busy): read it here, on the phone, like the Screenshot tab.
+        const img = sessionStorage.getItem("scamdecoder-prefill-image");
+        if (img) { sessionStorage.removeItem("scamdecoder-prefill-image"); setMode("image"); fetch(img).then((r) => r.blob()).then((b) => readImage(new File([b], "shared.jpg", { type: b.type || "image/jpeg" }))); }
+      } catch {}
+    };
     take();
     addEventListener("decodr-prefill", take);
     return () => removeEventListener("decodr-prefill", take);
