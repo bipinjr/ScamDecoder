@@ -61,7 +61,8 @@ public class MainActivity extends Activity {
             public void onPageFinished(WebView v, String url) {
                 android.util.Log.i("DECODR", "page finished: " + url + " toCheck=" + (toCheck != null) + " shared=" + (shared != null));
                 if (toCheck != null) {
-                    String js = "sessionStorage.setItem('scamdecoder-prefill'," + JSONObject.quote(toCheck) + ");location.replace('/check');";
+                    // Hand the text over and signal the page; reloading here raced the page's own start-up and lost the check.
+                    String js = "sessionStorage.setItem('scamdecoder-prefill'," + JSONObject.quote(toCheck) + ");dispatchEvent(new Event('decodr-prefill'));";
                     toCheck = null;
                     v.evaluateJavascript(js, null);
                     return;
