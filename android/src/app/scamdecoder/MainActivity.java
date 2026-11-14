@@ -32,6 +32,7 @@ public class MainActivity extends Activity {
         web = new WebView(this);
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
+        web.getSettings().setUserAgentString(web.getSettings().getUserAgentString() + " DECODR-Android"); // lets the Radar label checks made in the app
         web.getSettings().setTextZoom(100); // the page sizes its own text; the phone's font scale on top made buttons spill and crowd
         web.getSettings().setOffscreenPreRaster(true); // paint tiles just off screen too, so a fling never scrolls into blank or half-drawn content
         web.setOverScrollMode(android.view.View.OVER_SCROLL_NEVER);

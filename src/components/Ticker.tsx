@@ -58,7 +58,7 @@ export function Ticker() {
               {[...list, ...list].map((r, i) => (
                 <li key={`${r.id}-${i}`} className="flex shrink-0 items-center gap-2" aria-hidden={i >= list.length}>
                   <span className="font-semibold text-white">{r.scam_type}</span>
-                  <span>· {r.state ?? "India"} · {r.channel === "other" ? "web" : r.channel}</span>
+                  <span>· {r.state ?? "India"} · {({ other: "web", app: "Android app", sms: "SMS", whatsapp: "WhatsApp", telegram: "Telegram", call: "call", email: "email" } as Record<string, string>)[r.channel] ?? r.channel}</span>
                   <span className="font-mono text-xs text-ink-soft/70">{ago(r.created_at)}</span>
                 </li>
               ))}

@@ -63,7 +63,7 @@ export function Checker({ children }: { children?: React.ReactNode }) {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ text: input, language, channel: source === "voice" ? "call" : "other" }),
+        body: JSON.stringify({ text: input, language, channel: source === "voice" ? "call" : navigator.userAgent.includes("DECODR-Android") ? "app" : "other" }),
       });
       const j = await res.json();
       if (!res.ok) throw new Error(j.error || "The check didn't finish. Try again in a moment.");

@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { RadarReport, RadarSummary } from "@/lib/radar";
 import { PRINCIPLES } from "@/lib/principles";
 
-const CHANNEL: Record<string, string> = { sms: "SMS", whatsapp: "WhatsApp", telegram: "Telegram", call: "Phone call", email: "Email", other: "Web check" };
+const CHANNEL: Record<string, string> = { sms: "SMS", whatsapp: "WhatsApp", telegram: "Telegram", call: "Phone call", email: "Email", app: "Android app", other: "Web check" };
 const POLL_MS = 4000;
 
 function ago(iso: string) {

@@ -9,7 +9,7 @@ create table public.reports (
     cardinality(principles) <= 7
     and principles <@ array['time','social_compliance','need_greed','distraction','kindness','herd','dishonesty']
   ),
-  channel text not null default 'other' check (channel in ('sms', 'whatsapp', 'telegram', 'email', 'call', 'other')),
+  channel text not null default 'other' check (channel in ('sms', 'whatsapp', 'telegram', 'email', 'call', 'app', 'other')),
   language text not null default 'English' check (char_length(language) <= 20),
   state text check (state is null or char_length(state) <= 40),
   excerpt text not null check (char_length(excerpt) between 5 and 280),

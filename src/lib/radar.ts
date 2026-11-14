@@ -11,7 +11,7 @@ const KEY = clean(process.env.SUPABASE_KEY);
 const headers = { apikey: KEY, Authorization: `Bearer ${KEY}`, "content-type": "application/json" };
 const DB_SET = /^https:\/\/[a-z0-9-]+\.supabase\.co$/.test(URL) && KEY.length > 20;
 
-export const CHANNELS = ["sms", "whatsapp", "telegram", "email", "call", "other"] as const;
+export const CHANNELS = ["sms", "whatsapp", "telegram", "email", "call", "app", "other"] as const;
 export type Channel = (typeof CHANNELS)[number];
 
 export type ReportInput = {
@@ -63,7 +63,10 @@ export async function saveReport(r: ReportInput): Promise<"database" | "local"> 
   const row = toRow(r);
   if (DB_SET) {
     try {
-      const res = await fetch(`${URL}/rest/v1/reports`, { method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(row), cache: "no-store" });
+      const post = (body: object) => fetch(`${URL}/rest/v1/reports`, { method: "POST", headers: { ...headers, Prefer: "return=minimal" }, body: JSON.stringify(body), cache: "no-store" });
+      let res = await post(row);
+      // A database whose channel list predates a new door rejects the label (23514): keep the report, filed as "other".
+      if (!res.ok && row.channel !== "other" && (await res.clone().text()).includes("23514")) res = await post({ ...row, channel: "other" });
       if (res.ok) return "database";
       console.error("[radar] save failed:", res.status, (await res.text()).slice(0, 160));
     } catch (e) {
