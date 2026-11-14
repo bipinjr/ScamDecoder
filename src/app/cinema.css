@@ -105,7 +105,7 @@ h1 { text-transform: uppercase; letter-spacing: .06em !important; font-weight: 7
 }
 @media (max-width: 767px) {
   /* Scroll-linked effects are for large screens; on phones content simply appears, no blur, no parallax. */
-  main > section, main section .card, main ul > li.card, #levers li, .sd-scope, .sd-hero > div:first-child, .word-reveal .word, .reveal {
+  main > section, main section .card, main ul > li.card, #levers li, .sd-scope, .sd-hero > div:first-child, .word-reveal .word, .reveal, .phone-in {
     animation: none !important; opacity: 1 !important; filter: none !important; transform: none !important;
   }
 }

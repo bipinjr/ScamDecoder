@@ -46,6 +46,14 @@ export async function POST(req: Request) {
   }
 
   const text = await answer(m.text ?? m.caption ?? "", media, LANG[m.from?.language_code ?? ""] ?? "auto", "telegram");
-  // Telegram lets a webhook reply by returning the API call as the response body: no second request needed.
-  return Response.json({ method: "sendMessage", chat_id: m.chat.id, text, reply_parameters: { message_id: m.message_id }, link_preview_options: { is_disabled: true } });
+  const reply = { chat_id: m.chat.id, text, reply_parameters: { message_id: m.message_id, allow_sending_without_reply: true }, link_preview_options: { is_disabled: true } };
+  // Send it ourselves so a failed delivery is logged; Telegram drops a failed webhook-body reply without a trace.
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (token) {
+    const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(reply) })
+      .then((x) => x.json()).catch((e) => ({ ok: false, description: (e as Error).message }));
+    if (r?.ok) return Response.json({ ok: true });
+    console.error("[telegram] sendMessage failed:", r?.description);
+  } else console.error("[telegram] TELEGRAM_BOT_TOKEN is not set: photos and voice notes cannot be read");
+  return Response.json({ method: "sendMessage", ...reply }); // fallback: reply in the webhook body
 }

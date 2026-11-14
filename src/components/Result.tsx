@@ -121,21 +121,21 @@ export function Result({
       </div>
 
       {result.reported && (
-        <p className="card mt-6 flex flex-wrap items-center gap-3 px-5 py-4 text-ink" role="status">
-          <span className="h-2 w-2 rounded-full bg-[#d7dbe0] shadow-[0_0_10px_#d7dbe0]" aria-hidden />
+        <p className="card mt-6 px-5 py-4 leading-relaxed text-ink" role="status">
+          <span className="mr-2.5 inline-block h-2 w-2 -translate-y-px rounded-full bg-[#d7dbe0] shadow-[0_0_10px_#d7dbe0]" aria-hidden />
           Added to the <a href="/radar" className="font-semibold text-white underline underline-offset-4">Scam Radar</a> to warn others. Phone numbers, OTPs and account numbers were removed first.
         </p>
       )}
 
       {/* Marked-up message */}
       {result.tactics.length > 0 && (
-        <section className="mt-12 grid gap-8 lg:grid-cols-[minmax(0,1fr)_21rem]" aria-label="The message, marked up">
-          <div className="ruled self-start rounded-2xl py-6 pl-14 pr-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8),0_0_60px_-20px_rgba(255,75,62,0.35)] sm:pr-8 lg:sticky lg:top-24">
+        <section className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,1fr)_21rem]" aria-label="The message, marked up">
+          <div className="ruled min-w-0 self-start rounded-2xl py-6 pl-10 pr-4 sm:pl-14 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8),0_0_60px_-20px_rgba(255,75,62,0.35)] sm:pr-8 lg:sticky lg:top-24">
             <p className="mb-3 -ml-1 font-pen text-xl text-ink-soft">
               {source === "voice" ? "What the caller said" : source === "image" ? "Text from your screenshot" : "The message you received"}
             </p>
             <div className="bubble max-w-xl bg-page-bubble px-4 py-3" style={{ "--bubble-bg": "var(--color-page-bubble)" } as CSSProperties}>
-              <p className="whitespace-pre-wrap text-lg leading-[2]">
+              <p className="whitespace-pre-wrap text-lg leading-[2] [overflow-wrap:anywhere]">
                 {segments.map((seg, i) =>
                   seg.n === undefined ? (
                     <span key={i}>{seg.s}</span>

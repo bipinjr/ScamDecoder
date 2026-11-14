@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
     private String shared; // text waiting to be handed to the page
     private String toCheck; // text read from a shared screenshot, checked as a message
     private ValueCallback<Uri[]> filePick;
+    private Uri waitingImage; // a shared photo we could not open yet: read again once photo access is allowed
 
     @Override
     protected void onCreate(Bundle b) {
@@ -31,6 +32,20 @@ public class MainActivity extends Activity {
         web = new WebView(this);
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
+        web.getSettings().setTextZoom(100); // the page sizes its own text; the phone's font scale on top made buttons spill and crowd
+        web.setBackgroundColor(0xff050505);
+        getWindow().getDecorView().setBackgroundColor(0xff050505);
+        // Android 15 draws apps edge to edge: keep the page clear of the status bar, the gesture bar and the keyboard.
+        android.widget.FrameLayout root = new android.widget.FrameLayout(this); // padding goes on a frame: a WebView draws its page under its own padding
+        root.setBackgroundColor(0xff050505);
+        root.addView(web);
+        root.setOnApplyWindowInsetsListener((v, ins) -> {
+            if (Build.VERSION.SDK_INT >= 30) {
+                android.graphics.Insets s = ins.getInsets(android.view.WindowInsets.Type.systemBars() | android.view.WindowInsets.Type.ime() | android.view.WindowInsets.Type.displayCutout());
+                v.setPadding(s.left, s.top, s.right, s.bottom);
+            } else v.setPadding(ins.getSystemWindowInsetLeft(), ins.getSystemWindowInsetTop(), ins.getSystemWindowInsetRight(), ins.getSystemWindowInsetBottom());
+            return ins;
+        });
         web.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest r) {
@@ -70,7 +85,7 @@ public class MainActivity extends Activity {
                 return true;
             }
         });
-        setContentView(web);
+        setContentView(root);
         askPermissions();
         rememberBrowser();
         open(getIntent());
@@ -129,6 +144,10 @@ public class MainActivity extends Activity {
                     if (j.has("text")) text = j.getString("text"); else error = j.optString("error", error);
                     android.util.Log.i("DECODR", "read-image HTTP " + c.getResponseCode() + " text chars=" + (text == null ? -1 : text.length()) + " error=" + (text == null ? error : "-"));
                 }
+            } catch (SecurityException e) {
+                android.util.Log.e("DECODR", "no access to shared image", e);
+                runOnUiThread(() -> askPhotoAccess(img));
+                return;
             } catch (Exception e) {
                 android.util.Log.e("DECODR", "reading shared image failed", e);
                 error = "No internet connection, or the image could not be opened.";
@@ -174,6 +193,27 @@ public class MainActivity extends Activity {
         if (checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) need.add(Manifest.permission.RECEIVE_SMS);
         if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) need.add(Manifest.permission.POST_NOTIFICATIONS);
         if (!need.isEmpty()) requestPermissions(need.toArray(new String[0]), 2);
+    }
+
+    /** The gallery shared a photo without granting access: ask for photo access once, then read it again. */
+    private void askPhotoAccess(Uri img) {
+        String perm = Build.VERSION.SDK_INT >= 33 ? Manifest.permission.READ_MEDIA_IMAGES : Manifest.permission.READ_EXTERNAL_STORAGE;
+        if (checkSelfPermission(perm) == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Could not open that photo. Pick the screenshot here instead.", Toast.LENGTH_LONG).show();
+            web.loadUrl(base + "/check");
+            return;
+        }
+        waitingImage = img;
+        requestPermissions(new String[] { perm }, 3);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int req, String[] perms, int[] results) {
+        if (req != 3 || waitingImage == null) return;
+        Uri img = waitingImage;
+        waitingImage = null;
+        if (results.length > 0 && results[0] == PackageManager.PERMISSION_GRANTED) readImage(img);
+        else { Toast.makeText(this, "Allow photo access to check shared screenshots, or pick it here.", Toast.LENGTH_LONG).show(); web.loadUrl(base + "/check"); }
     }
 
     @Override

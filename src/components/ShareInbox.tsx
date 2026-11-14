@@ -60,11 +60,11 @@ export function ShareInbox() {
       {inbox.kind === "empty" && (
         <>
           <p className="mt-5 text-lg text-ink-soft">On WhatsApp, SMS or any browser, long-press a link or a QR screenshot, tap <b className="text-ink">Share</b>, then choose <b className="text-ink">DECODR</b>. Or copy it and tap below.</p>
-          <button onClick={fromClipboard} className="btn-primary mt-8 w-full rounded-2xl px-5 py-4 text-lg">Check what I copied</button>
+          <button onClick={fromClipboard} className="btn-primary mt-8 w-full rounded-xl px-5 py-3 text-base font-semibold">Check what I copied</button>
           {clipErr && <p className="mt-3 text-red" role="alert">{clipErr}</p>}
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {[["/check", "Check a message"], ["/radar", "Scam Radar"], ["/extension", "Browser extension"]].map(([h, t]) => (
-              <Link key={h} href={h} className="btn-ghost rounded-2xl px-4 py-3 text-center">{t}</Link>
+              <Link key={h} href={h} className="btn-ghost flex items-center justify-center rounded-xl px-4 py-2.5 text-center text-[0.95rem] font-medium">{t}</Link>
             ))}
           </div>
         </>
