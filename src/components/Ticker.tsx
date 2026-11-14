@@ -31,6 +31,15 @@ export function Ticker() {
     return () => { alive = false; clearInterval(id); bc?.close(); };
   }, []);
 
+  // Moving this wide strip while the page scrolls cost phones most of their frames: hold it until scrolling stops.
+  useEffect(() => {
+    const root = document.documentElement;
+    let t: ReturnType<typeof setTimeout> | undefined;
+    const onScroll = () => { root.classList.add("is-scrolling"); clearTimeout(t); t = setTimeout(() => root.classList.remove("is-scrolling"), 180); };
+    addEventListener("scroll", onScroll, { passive: true });
+    return () => { removeEventListener("scroll", onScroll); clearTimeout(t); root.classList.remove("is-scrolling"); };
+  }, []);
+
   if (failed && !items) return null;
   const list = items ?? [];
   return (
