@@ -121,3 +121,19 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 @media (prefers-reduced-motion: reduce) { .menu-in > li { animation: none; } }
 /* Inline text links (1930, cybercrime.gov.in, sources): invisible padding grows the tap area to ~44px without moving the text. */
 :where(p, small, figcaption, cite) > a:not([class*="btn"]):not(.block):not(.inline-block):not(.flex) { padding: 11px 4px; margin-inline: -4px; }
+
+/* ---------- Phones: smooth scrolling first. Every effect that repaints the screen each frame is off; cheap ones stay. ---------- */
+@media (max-width: 767px) {
+  .fx-pulse { animation: none !important; filter: none !important; opacity: .35; } /* drop-shadow + dash animation repainted the full screen */
+  .fx-led, .sd-scope::before, .sd-scope::after { animation: none !important; }
+  .fx-bg { contain: strict; }
+  *, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  header.sticky { background: #070707 !important; }   /* solid instead of blurring the page under it on every scroll frame */
+  .card:hover, .btn-primary:hover { box-shadow: none !important; }  /* touch has no hover; skip the sticky glow after a tap */
+  html { -webkit-text-size-adjust: 100%; }
+}
+
+/* Page change: the new page fades and rises in (opacity/transform only, so it stays on the compositor). */
+.page-in { animation: page-in 260ms var(--ease) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .page-in { animation: none; } }

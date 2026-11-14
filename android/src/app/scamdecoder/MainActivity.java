@@ -33,6 +33,9 @@ public class MainActivity extends Activity {
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
         web.getSettings().setTextZoom(100); // the page sizes its own text; the phone's font scale on top made buttons spill and crowd
+        web.getSettings().setOffscreenPreRaster(true); // paint tiles just off screen too, so a fling never scrolls into blank or half-drawn content
+        web.setOverScrollMode(android.view.View.OVER_SCROLL_NEVER);
+        if (Build.VERSION.SDK_INT >= 26) web.setRendererPriorityPolicy(WebView.RENDERER_PRIORITY_IMPORTANT, false);
         web.setBackgroundColor(0xff050505);
         getWindow().getDecorView().setBackgroundColor(0xff050505);
         // Android 15 draws apps edge to edge: keep the page clear of the status bar, the gesture bar and the keyboard.

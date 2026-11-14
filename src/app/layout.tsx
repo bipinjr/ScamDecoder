@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CursorGlow />
         <RegisterSW />
         <Nav />
-        <div className="page-in">{children}</div>
+        {children}
         <Footer />
       </body>
     </html>
